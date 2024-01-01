@@ -1,31 +1,7 @@
-![Image](./header.png)
+## Quick Start
 
-# Stylus Hello World
-
-Project starter template for writing Arbitrum Stylus programs in Rust using the [stylus-sdk](https://github.com/OffchainLabs/stylus-sdk-rs). It includes a Rust implementation of a basic counter Ethereum smart contract:
-
-```js
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
-
-contract Counter {
-    uint256 public number;
-
-    function setNumber(uint256 newNumber) public {
-        number = newNumber;
-    }
-
-    function increment() public {
-        number++;
-    }
-}
-```
-
-To set up more minimal example that still uses the Stylus SDK, use `cargo stylus new --minimal <YOUR_PROJECT_NAME>` under [OffchainLabs/cargo-stylus](https://github.com/OffchainLabs/cargo-stylus).
-
-## Quick Start 
-
-Install [Rust](https://www.rust-lang.org/tools/install), and then install the Stylus CLI tool with Cargo
+Install [Rust](https://www.rust-lang.org/tools/install), and then install the
+Stylus CLI tool with Cargo
 
 ```bash
 RUSTFLAGS="-C link-args=-rdynamic" cargo install --force cargo-stylus
@@ -51,11 +27,13 @@ git clone https://github.com/OffchainLabs/stylus-hello-world && cd stylus-hello-
 
 ### Testnet Information
 
-All testnet information, including faucets and RPC endpoints can be found [here](https://docs.arbitrum.io/stylus/reference/testnet-information).
+All testnet information, including faucets and RPC endpoints can be found
+[here](https://docs.arbitrum.io/stylus/reference/testnet-information).
 
 ### ABI Export
 
-You can export the Solidity ABI for your program by using the `cargo stylus` tool as follows:
+You can export the Solidity ABI for your program by using the `cargo stylus`
+tool as follows:
 
 ```bash
 cargo stylus export-abi
@@ -85,8 +63,11 @@ export-abi = ["stylus-sdk/export-abi"]
 
 ## Deploying
 
-You can use the `cargo stylus` command to also deploy your program to the Stylus testnet. We can use the tool to first check
-our program compiles to valid WASM for Stylus and will succeed a deployment onchain without transacting. By default, this will use the Stylus testnet public RPC endpoint. See here for [Stylus testnet information](https://docs.arbitrum.io/stylus/reference/testnet-information)
+You can use the `cargo stylus` command to also deploy your program to the Stylus
+testnet. We can use the tool to first check our program compiles to valid WASM
+for Stylus and will succeed a deployment onchain without transacting. By
+default, this will use the Stylus testnet public RPC endpoint. See here for
+[Stylus testnet information](https://docs.arbitrum.io/stylus/reference/testnet-information)
 
 ```bash
 cargo stylus check
@@ -101,7 +82,10 @@ Compressed WASM size: 8.9 KB
 Program succeeded Stylus onchain activation checks with Stylus version: 1
 ```
 
-Next, we can estimate the gas costs to deploy and activate our program before we send our transaction. Check out the [cargo-stylus](https://github.com/OffchainLabs/cargo-stylus) README to see the different wallet options for this step:
+Next, we can estimate the gas costs to deploy and activate our program before we
+send our transaction. Check out the
+[cargo-stylus](https://github.com/OffchainLabs/cargo-stylus) README to see the
+different wallet options for this step:
 
 ```bash
 cargo stylus deploy \
@@ -116,8 +100,10 @@ Deploying program to address e43a32b54e48c7ec0d3d9ed2d628783c23d65020
 Estimated gas for deployment: 1874876
 ```
 
-The above only estimates gas for the deployment tx by default. To estimate gas for activation, first deploy your program using `--mode=deploy-only`, and then run `cargo stylus deploy` with the `--estimate-gas-only` flag, `--mode=activate-only`, and specify `--activate-program-address`.
-
+The above only estimates gas for the deployment tx by default. To estimate gas
+for activation, first deploy your program using `--mode=deploy-only`, and then
+run `cargo stylus deploy` with the `--estimate-gas-only` flag,
+`--mode=activate-only`, and specify `--activate-program-address`.
 
 Here's how to deploy:
 
@@ -140,13 +126,19 @@ Submitting tx...
 Confirmed tx 0x0bdb…3307, gas used 14044638
 ```
 
-Once both steps are successful, you can interact with your program as you would with any Ethereum smart contract.
+Once both steps are successful, you can interact with your program as you would
+with any Ethereum smart contract.
 
 ## Calling Your Program
 
-This template includes an example of how to call and transact with your program in Rust using [ethers-rs](https://github.com/gakonst/ethers-rs) under the `examples/counter.rs`. However, your programs are also Ethereum ABI equivalent if using the Stylus SDK. **They can be called and transacted with using any other Ethereum tooling.**
+This template includes an example of how to call and transact with your program
+in Rust using [ethers-rs](https://github.com/gakonst/ethers-rs) under the
+`examples/counter.rs`. However, your programs are also Ethereum ABI equivalent
+if using the Stylus SDK. **They can be called and transacted with using any
+other Ethereum tooling.**
 
-By using the program address from your deployment step above, and your wallet, you can attempt to call the counter program and increase its value in storage:
+By using the program address from your deployment step above, and your wallet,
+you can attempt to call the counter program and increase its value in storage:
 
 ```rs
 abigen!(
@@ -168,7 +160,8 @@ let num = counter.number().call().await;
 println!("New counter number value = {:?}", num);
 ```
 
-To run it, set the following env vars or place them in a `.env` file this project, then:
+To run it, set the following env vars or place them in a `.env` file this
+project, then:
 
 ```
 STYLUS_PROGRAM_ADDRESS=<the onchain address of your deployed program>
@@ -182,24 +175,39 @@ Next, run:
 cargo run --example counter --target=<YOUR_ARCHITECTURE>
 ```
 
-Where you can find `YOUR_ARCHITECTURE` by running `rustc -vV | grep host`. For M1 Apple computers, for example, this is `aarch64-apple-darwin` and for most Linux x86 it is `x86_64-unknown-linux-gnu`
+Where you can find `YOUR_ARCHITECTURE` by running `rustc -vV | grep host`. For
+M1 Apple computers, for example, this is `aarch64-apple-darwin` and for most
+Linux x86 it is `x86_64-unknown-linux-gnu`
 
 ## Build Options
 
-By default, the cargo stylus tool will build your project for WASM using sensible optimizations, but you can control how this gets compiled by seeing the full README for [cargo stylus](https://github.com/OffchainLabs/cargo-stylus). If you wish to optimize the size of your compiled WASM, see the different options available [here](https://github.com/OffchainLabs/cargo-stylus/blob/main/OPTIMIZING_BINARIES.md).
+By default, the cargo stylus tool will build your project for WASM using
+sensible optimizations, but you can control how this gets compiled by seeing the
+full README for [cargo stylus](https://github.com/OffchainLabs/cargo-stylus). If
+you wish to optimize the size of your compiled WASM, see the different options
+available
+[here](https://github.com/OffchainLabs/cargo-stylus/blob/main/OPTIMIZING_BINARIES.md).
 
 ## Peeking Under the Hood
 
-The [stylus-sdk](https://github.com/OffchainLabs/stylus-sdk-rs) contains many features for writing Stylus programs in Rust. It also provides helpful macros to make the experience for Solidity developers easier. These macros expand your code into pure Rust code that can then be compiled to WASM. If you want to see what the `stylus-hello-world` boilerplate expands into, you can use `cargo expand` to see the pure Rust code that will be deployed onchain.
+The [stylus-sdk](https://github.com/OffchainLabs/stylus-sdk-rs) contains many
+features for writing Stylus programs in Rust. It also provides helpful macros to
+make the experience for Solidity developers easier. These macros expand your
+code into pure Rust code that can then be compiled to WASM. If you want to see
+what the `stylus-hello-world` boilerplate expands into, you can use
+`cargo expand` to see the pure Rust code that will be deployed onchain.
 
-First, run `cargo install cargo-expand` if you don't have the subcommand already, then:
+First, run `cargo install cargo-expand` if you don't have the subcommand
+already, then:
 
 ```
 cargo expand --all-features --release --target=<YOUR_ARCHITECTURE>
 ```
 
-Where you can find `YOUR_ARCHITECTURE` by running `rustc -vV | grep host`. For M1 Apple computers, for example, this is `aarch64-apple-darwin`.
+Where you can find `YOUR_ARCHITECTURE` by running `rustc -vV | grep host`. For
+M1 Apple computers, for example, this is `aarch64-apple-darwin`.
 
 ## License
 
-This project is fully open source, including an Apache-2.0 or MIT license at your choosing under your own copyright.
+This project is fully open source, including an Apache-2.0 or MIT license at
+your choosing under your own copyright.
